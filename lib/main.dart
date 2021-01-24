@@ -11,7 +11,10 @@ main() {
   // runApp(MaterialApp(home: PhysicsCardDragDemo()));
 
   // Animate the properties of a container
-  runApp(AnimatedContainerApp());
+  // runApp(AnimatedContainerApp());
+
+  // Fade a widget in and out
+  runApp(MyApp());
 }
 
 // Animate a page route transition
@@ -224,6 +227,71 @@ class _AnimatedContainerAppState extends State<AnimatedContainerApp> {
           },
         ),
       ),
+    );
+  }
+}
+
+// Fade a widget in and out
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final appTitle = 'Opacity Demo';
+    return MaterialApp(
+      title: appTitle,
+      home: MyHomePage(title: appTitle),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  final String title;
+
+  MyHomePage({Key key, this.title}) : super(key: key);
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+// State class 의 역활
+// 1. UI 를 구축
+// 2. UI 를 구축할 수 있게 도와주는 데이터를 관리
+class _MyHomePageState extends State<MyHomePage> {
+  // Whether the green box should be visible.
+  bool _visible = true;
+
+  @override
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: AnimatedOpacity(
+          // visible 이면 0.0 (invisible) 으로 애니메이션.
+          // invisible 이면 1.0 (fully visible) 으로 애니메이션.
+          opacity: _visible ? 1.0 : 0.0,
+          // 0.5초 동안 애니메이션 실행
+          duration: Duration(milliseconds: 500),
+          // The green box must be a child of the AnimatedOpacity widget.
+          child: Container(
+            width: 200.0,
+            height: 200.0,
+            color: Colors.green,
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Call setState. This tells Flutter to rebuild the
+          // UI with the changes.
+          setState(() {
+            _visible = !_visible;
+          });
+        },
+        tooltip: 'Toggle Opacity',
+        child: Icon(Icons.flip),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
