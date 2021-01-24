@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 
-main() {
+// main() {
   // Animate a page route transition
   // runApp(MaterialApp(home: Page1()));
 
@@ -14,8 +14,8 @@ main() {
   // runApp(AnimatedContainerApp());
 
   // Fade a widget in and out
-  runApp(MyApp());
-}
+//   runApp(MyApp());
+// }
 
 // Animate a page route transition
 class Page1 extends StatelessWidget {
