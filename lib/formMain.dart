@@ -5,7 +5,10 @@ void main() {
   // runApp(ValidationApp());
 
   // Handle changes to a text field
-  runApp(MyCustomFormApp());
+  // runApp(MyCustomFormApp());
+
+  // Focus and text fields
+  runApp(FocusApp());
 }
 
 // Build a form with validation
@@ -133,6 +136,76 @@ class _MyCustomFormState extends State<MyCustomForm> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+// Focus and text fields
+class FocusApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Text Field Focus',
+      home: FocusForm(),
+    );
+  }
+}
+
+// Define a custom Form widget.
+class FocusForm extends StatefulWidget {
+  @override
+  _FocusFormState createState() => _FocusFormState();
+}
+
+// Define a corresponding State class.
+// This class holds data related to the form.
+class _FocusFormState extends State<FocusForm> {
+  // Define the focus node. To manage the lifecycle, create the FocusNode in
+  // the initState method, and clean it up in the dispose method.
+  FocusNode myFocusNode;
+
+  @override
+  void initState() {
+    super.initState();
+
+    myFocusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    // Clean up the focus node when the Form is disposed.
+    myFocusNode.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Text Field Focus'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            // 앱 시작 후 asap 한 시간 내에 focusing 된다. (autofocus 가 true 이므로)
+            TextField(
+              autofocus: true,
+            ),
+            // FloatingActionButton 을 탭할 시 focusing 된다.
+            TextField(
+              focusNode: myFocusNode,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        // 버튼을 누를 시 myFocusNode 가 사용되고 있는 TextField 가 포커싱된다.
+        onPressed: () => myFocusNode.requestFocus(),
+        tooltip: 'Focus Second Text Field',
+        child: Icon(Icons.edit),
       ),
     );
   }
