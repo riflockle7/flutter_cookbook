@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 
@@ -6,7 +8,10 @@ main() {
   // runApp(MaterialApp(home: Page1()));
 
   // Animate a widget using a physics simulation
-  runApp(MaterialApp(home: PhysicsCardDragDemo()));
+  // runApp(MaterialApp(home: PhysicsCardDragDemo()));
+
+  // Animate the properties of a container
+  runApp(AnimatedContainerApp());
 }
 
 // Animate a page route transition
@@ -153,6 +158,70 @@ class _DraggableCardState extends State<DraggableCard>
         alignment: _dragAlignment,
         child: Card(
           child: widget.child,
+        ),
+      ),
+    );
+  }
+}
+
+// Animate the properties of a container
+class AnimatedContainerApp extends StatefulWidget {
+  @override
+  _AnimatedContainerAppState createState() => _AnimatedContainerAppState();
+}
+
+class _AnimatedContainerAppState extends State<AnimatedContainerApp> {
+  double _width = 50;
+  double _height = 50;
+  Color _color = Colors.green;
+  BorderRadiusGeometry _borderRadius = BorderRadius.circular(8);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('AnimatedContainer Demo'),
+        ),
+        body: Center(
+          child: AnimatedContainer(
+            width: _width,
+            height: _height,
+            decoration: BoxDecoration(
+              color: _color,
+              borderRadius: _borderRadius,
+            ),
+            // 1초동안 애니메이션 실행
+            duration: Duration(seconds: 1),
+            // Provide an optional curve to make the animation feel smoother.
+            curve: Curves.fastOutSlowIn,
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.play_arrow),
+          // When the user taps the button
+          onPressed: () {
+            // 이걸 통해 widget 이 바뀜 (StatelessWidget 에서는 못 바꿈)
+            setState(() {
+              final random = Random();
+
+              // 랜덤한 너비, 높이 설정됨
+              _width = random.nextInt(300).toDouble();
+              _height = random.nextInt(300).toDouble();
+
+              // 랜덤 컬러 생성
+              _color = Color.fromRGBO(
+                random.nextInt(256),
+                random.nextInt(256),
+                random.nextInt(256),
+                1,
+              );
+
+              // 랜덤한 radius 처리
+              _borderRadius =
+                  BorderRadius.circular(random.nextInt(100).toDouble());
+            });
+          },
         ),
       ),
     );
