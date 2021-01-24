@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 
 void main() {
   // Add a Drawer to a screen
-  runApp(MyApp());
+  // runApp(MyApp());
+
+  // Display a snackbar
+  runApp(SnackBarDemo());
 }
 
 // Add a Drawer to a screen
@@ -56,6 +59,47 @@ class MyHomePage extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+// Display a snackbar
+class SnackBarDemo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'SnackBar Demo',
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('SnackBar Demo'),
+        ),
+        body: SnackBarPage(),
+      ),
+    );
+  }
+}
+
+class SnackBarPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: ElevatedButton(
+        onPressed: () {
+          final snackBar = SnackBar(
+            content: Text('Yay! A SnackBar!'),
+            action: SnackBarAction(
+              label: 'Undo',
+              onPressed: () {
+                // Undo 버튼을 눌렀을 때 동작하는 내용
+              },
+            ),
+          );
+
+          // 위젯 트리에서 Scaffold를 찾아 SnackBar를 표시한다.
+          Scaffold.of(context).showSnackBar(snackBar);
+        },
+        child: Text('Show SnackBar'),
       ),
     );
   }
