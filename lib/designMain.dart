@@ -11,7 +11,10 @@ void main() {
   // runApp(OrientationApp());
 
   // Use themes to share colors and font styles
-  runApp(ThemeColorFontApp());
+  // runApp(ThemeColorFontApp());
+
+  // Work with tabs
+  runApp(TabBarDemo());
 }
 
 // Add a Drawer to a screen
@@ -217,6 +220,37 @@ class ThemeColorFontPage extends StatelessWidget {
         child: FloatingActionButton(
           onPressed: null,
           child: Icon(Icons.add),
+        ),
+      ),
+    );
+  }
+}
+
+// Work with tabs
+class TabBarDemo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          appBar: AppBar(
+            bottom: TabBar(
+              tabs: [
+                Tab(icon: Icon(Icons.directions_car)),
+                Tab(icon: Icon(Icons.directions_transit)),
+                Tab(icon: Icon(Icons.directions_bike)),
+              ],
+            ),
+            title: Text('Tabs Demo'),
+          ),
+          body: TabBarView(
+            children: [
+              Icon(Icons.directions_car),
+              Icon(Icons.directions_transit),
+              Icon(Icons.directions_bike),
+            ],
+          ),
         ),
       ),
     );
