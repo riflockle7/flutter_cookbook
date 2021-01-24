@@ -5,7 +5,10 @@ void main() {
   // runApp(MyApp());
 
   // Display a snackbar
-  runApp(SnackBarDemo());
+  // runApp(SnackBarDemo());
+
+  // Update the UI based on orientation
+  runApp(OrientationApp());
 }
 
 // Add a Drawer to a screen
@@ -100,6 +103,52 @@ class SnackBarPage extends StatelessWidget {
           Scaffold.of(context).showSnackBar(snackBar);
         },
         child: Text('Show SnackBar'),
+      ),
+    );
+  }
+}
+
+// Update the UI based on orientation
+class OrientationApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final appTitle = 'Orientation Demo';
+
+    return MaterialApp(
+      title: appTitle,
+      home: OrientationList(
+        title: appTitle,
+      ),
+    );
+  }
+}
+
+class OrientationList extends StatelessWidget {
+  final String title;
+
+  OrientationList({Key key, this.title}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(title)),
+      body: OrientationBuilder(
+        builder: (context, orientation) {
+          return GridView.count(
+            // portrait mode (세로 모드)에서는 2 columns
+            // landscape mode (가로 모드)에서는 3 columns.
+            crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
+            // 100 개 리스트 생성
+            children: List.generate(100, (index) {
+              return Center(
+                child: Text(
+                  'Item $index',
+                  style: Theme.of(context).textTheme.headline1,
+                ),
+              );
+            }),
+          );
+        },
       ),
     );
   }
