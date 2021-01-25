@@ -8,7 +8,10 @@ void main() {
   // runApp(MyCustomFormApp());
 
   // Focus and text fields
-  runApp(FocusApp());
+  // runApp(FocusApp());
+
+  // Retrieve the value of a text field
+  runApp(RetrieveTextApp());
 }
 
 // Build a form with validation
@@ -206,6 +209,67 @@ class _FocusFormState extends State<FocusForm> {
         onPressed: () => myFocusNode.requestFocus(),
         tooltip: 'Focus Second Text Field',
         child: Icon(Icons.edit),
+      ),
+    );
+  }
+}
+
+// Retrieve the value of a text field
+class RetrieveTextApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Retrieve Text Input',
+      home: MyCustomForm(),
+    );
+  }
+}
+
+class RetrieveTextForm extends StatefulWidget {
+  @override
+  _RetrieveTextFormState createState() => _RetrieveTextFormState();
+}
+
+class _RetrieveTextFormState extends State<RetrieveTextForm> {
+  // TextField 의 값을 검색하는 데 이용하기 위한 TextController 설정
+  final myController = TextEditingController();
+
+  @override
+  void dispose() {
+    // dispose 과정 수행 (clear)
+    myController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Retrieve Text Input'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: TextField(
+          controller: myController,
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        // When the user presses the button, show an alert dialog containing
+        // the text that the user has entered into the text field.
+        onPressed: () {
+          return showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                // Retrieve the text the that user has entered by using the
+                // TextEditingController.
+                content: Text(myController.text),
+              );
+            },
+          );
+        },
+        tooltip: 'Show me the value!',
+        child: Icon(Icons.text_fields),
       ),
     );
   }
