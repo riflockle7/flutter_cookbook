@@ -187,17 +187,40 @@ class _AnimatedContainerAppState extends State<AnimatedContainerApp> {
           title: Text('AnimatedContainer Demo'),
         ),
         body: Center(
-          child: AnimatedContainer(
-            width: _width,
-            height: _height,
-            decoration: BoxDecoration(
-              color: _color,
-              borderRadius: _borderRadius,
+          child: GestureDetector(
+            onTap: () {
+              setState(() {
+                final random = Random();
+
+                // 랜덤한 너비, 높이 설정됨
+                _width = random.nextInt(300).toDouble();
+                _height = random.nextInt(300).toDouble();
+
+                // 랜덤 컬러 생성
+                _color = Color.fromRGBO(
+                  random.nextInt(256),
+                  random.nextInt(256),
+                  random.nextInt(256),
+                  1,
+                );
+
+                // 랜덤한 radius 처리
+                _borderRadius =
+                    BorderRadius.circular(random.nextInt(100).toDouble());
+              });
+            },
+            child: AnimatedContainer(
+              width: _width,
+              height: _height,
+              decoration: BoxDecoration(
+                color: _color,
+                borderRadius: _borderRadius,
+              ),
+              // 1초동안 애니메이션 실행
+              duration: Duration(seconds: 1),
+              // Provide an optional curve to make the animation feel smoother.
+              curve: Curves.fastOutSlowIn,
             ),
-            // 1초동안 애니메이션 실행
-            duration: Duration(seconds: 1),
-            // Provide an optional curve to make the animation feel smoother.
-            curve: Curves.fastOutSlowIn,
           ),
         ),
         floatingActionButton: FloatingActionButton(
@@ -205,25 +228,7 @@ class _AnimatedContainerAppState extends State<AnimatedContainerApp> {
           // When the user taps the button
           onPressed: () {
             // 이걸 통해 widget 이 바뀜 (StatelessWidget 에서는 못 바꿈)
-            setState(() {
-              final random = Random();
 
-              // 랜덤한 너비, 높이 설정됨
-              _width = random.nextInt(300).toDouble();
-              _height = random.nextInt(300).toDouble();
-
-              // 랜덤 컬러 생성
-              _color = Color.fromRGBO(
-                random.nextInt(256),
-                random.nextInt(256),
-                random.nextInt(256),
-                1,
-              );
-
-              // 랜덤한 radius 처리
-              _borderRadius =
-                  BorderRadius.circular(random.nextInt(100).toDouble());
-            });
           },
         ),
       ),

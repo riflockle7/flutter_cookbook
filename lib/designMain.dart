@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  // Add a Drawer to a screen
-  // runApp(MyApp());
-
-  // Display a snackbar
-  // runApp(SnackBarDemo());
-
-  // Update the UI based on orientation
-  // runApp(OrientationApp());
-
-  // Use themes to share colors and font styles
-  // runApp(ThemeColorFontApp());
-
-  // Work with tabs
-  runApp(TabBarDemo());
-}
+// void main() {
+//   // Add a Drawer to a screen
+//   // runApp(MyApp());
+//
+//   // Display a snackbar
+//   // runApp(SnackBarDemo());
+//
+//   // Update the UI based on orientation
+//   // runApp(OrientationApp());
+//
+//   // Use themes to share colors and font styles
+//   // runApp(ThemeColorFontApp());
+//
+//   // Work with tabs
+//   runApp(TabBarDemo());
+// }
 
 // Add a Drawer to a screen
 class MyApp extends StatelessWidget {
