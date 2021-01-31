@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+// void main() {
   // Add Material touch ripples
   // runApp(MyApp());
 
@@ -9,8 +9,8 @@ void main() {
   // runApp(GestureDetectorApp());
 
   // Implement swipe to dismiss
-  runApp(SwipeApp());
-}
+  // runApp(SwipeApp());
+// }
 
 // Add Material touch ripples
 class MyApp extends StatelessWidget {
