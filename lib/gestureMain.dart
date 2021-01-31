@@ -6,7 +6,10 @@ void main() {
   // runApp(MyApp());
 
   // Handle taps
-  runApp(GestureDetectorApp());
+  // runApp(GestureDetectorApp());
+
+  // Implement swipe to dismiss
+  runApp(SwipeApp());
 }
 
 // Add Material touch ripples
@@ -142,5 +145,62 @@ class GestureDetectorButton extends StatelessWidget {
           child: Text('My Button'),
         );
     }
+  }
+}
+
+// Implement swipe to dismiss
+// remove 할 시 위젯을 삭제해야 하므로 StatefulWidget 을 사용
+class SwipeApp extends StatefulWidget {
+  SwipeApp({Key key}) : super(key: key);
+
+  @override
+  SwipeAppState createState() {
+    return SwipeAppState();
+  }
+}
+
+class SwipeAppState extends State<SwipeApp> {
+  final items = List<String>.generate(20, (i) => "Item ${i + 1}");
+
+  @override
+  Widget build(BuildContext context) {
+    final title = 'Dismissing Items';
+
+    return MaterialApp(
+      title: title,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(title: Text(title)),
+        body: ListView.builder(
+          itemCount: items.length,
+          itemBuilder: (context, index) {
+            final item = items[index];
+
+            return Dismissible(
+              // Dismissible 위젯은 반드시 Key 를 포함해야 한다.
+              // 키를 통해 Flutter 에서 위젯을 식별이 가능하다.
+              key: Key(item),
+              // 항목을 swipe 한 후, 수행할 작업을 앱에 알려주는 기능을 제공
+              onDismissed: (direction) {
+                // 데이터 삭제한 후 해당 내용대로 위젯 새로 그림
+                setState(() {
+                  items.removeAt(index);
+                });
+
+                // 스낵바 보여주기
+                Scaffold.of(context)
+                    .showSnackBar(SnackBar(content: Text("$item dismissed")));
+              },
+              // child 뒤에 보여줄 배경 위젯
+              background: Container(color: Colors.red),
+              // 가장 맨 앞에 보여질 위젯
+              child: ListTile(title: Text('$item')),
+            );
+          },
+        ),
+      ),
+    );
   }
 }
