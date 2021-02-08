@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-void main() {
+// void main() {
   // Create a grid list
   // runApp(GridListApp());
 
@@ -26,11 +26,11 @@ void main() {
   // Use List
   // runApp(UseListApp());
 
-  // Work with long lists
-  runApp(LongListApp(
-    items: List<String>.generate(10000, (i) => "Item $i"),
-  ));
-}
+//   // Work with long lists
+//   runApp(LongListApp(
+//     items: List<String>.generate(10000, (i) => "Item $i"),
+//   ));
+// }
 
 // Create a grid list
 class GridListApp extends StatelessWidget {

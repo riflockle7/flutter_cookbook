@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-void main() {
+// void main() {
   // Display images from the internet
   // runApp(InternetImageApp());
 
@@ -11,8 +11,8 @@ void main() {
   // runApp(PlaceHolderFadeApp());
 
   // Work with cached images
-  runApp(CachedImageApp());
-}
+  // runApp(CachedImageApp());
+// }
 
 // Display images from the internet
 class InternetImageApp extends StatelessWidget {
