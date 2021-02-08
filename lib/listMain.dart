@@ -8,17 +8,20 @@ void main() {
   // runApp(HorizontalApp());
 
   // Create lists with different types of items
-  runApp(DynamicTypeApp(
-    items: List<Object>.generate(1000, (i) {
-      if (i % 10 == 0) {
-        return HeadingItem("Heading $i");
-      } else if (i % 7 == 0) {
-        return Image.network('https://picsum.photos/250?image=9');
-      } else {
-        return MessageItem("Sender $i", "Message body$i");
-      }
-    }),
-  ));
+  // runApp(DynamicTypeApp(
+  //   items: List<Object>.generate(1000, (i) {
+  //     if (i % 10 == 0) {
+  //       return HeadingItem("Heading $i");
+  //     } else if (i % 7 == 0) {
+  //       return Image.network('https://picsum.photos/250?image=9');
+  //     } else {
+  //       return MessageItem("Sender $i", "Message body$i");
+  //     }
+  //   }),
+  // ));
+
+  // Place a floating app bar above a list
+  runApp(HideAppBarApp());
 }
 
 // Create a grid list
@@ -172,4 +175,45 @@ class MessageItem implements ListItem {
   Widget buildTitle(BuildContext context) => Text(sender);
 
   Widget buildSubtitle(BuildContext context) => Text(body);
+}
+
+// Place a floating app bar above a list
+class HideAppBarApp extends StatelessWidget {
+  HideAppBarApp({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final title = 'Floating App Bar';
+
+    return MaterialApp(
+      title: title,
+      home: Scaffold(
+        // Scaffold 의 AppBar 를 적지 않는다.
+        body: CustomScrollView(
+          slivers: <Widget>[
+            // 대신 CustomScrollView.slivers 에 AppBar 를 언급한다.
+            SliverAppBar(
+              title: Text(title),
+              // 항목 목록을 위로 스크롤하기 시작하면 앱 바를 표시 할 수 있음(...?)
+              floating: true,
+              // 축소되는 크기를 시각화하는 자리 표시 위젯 표시
+              flexibleSpace: Placeholder(),
+              // 높이 좀 크게 만듬
+              expandedHeight: 200,
+            ),
+            // SliverGrid 도 있음
+            SliverList(
+              // delegate 를 통해, 화면에서 스크롤되는 항목을 만듬
+              delegate: SliverChildBuilderDelegate(
+                // itemViewBuilder (인자 : context, 인덱스)
+                (context, index) => ListTile(title: Text('Item #$index')),
+                // 아이템 1000 개
+                childCount: 1000,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
