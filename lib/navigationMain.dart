@@ -26,7 +26,13 @@ void main() {
   // ));
 
   // Pass arguments to a named route
-  runApp(PassArgumentsApp());
+  // runApp(PassArgumentsApp());
+
+  // Return data from a screen
+  runApp(MaterialApp(
+    title: 'Returning Data',
+    home: PopReturnApp(),
+  ));
 }
 
 // Animate a widget across screens
@@ -172,8 +178,8 @@ class PassArgumentsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // 명명 된 경로를 처리하는 기능
-      // push 되는 화면 식별 후, 올바른 화면을 만듬
+        // 명명 된 경로를 처리하는 기능
+        // push 되는 화면 식별 후, 올바른 화면을 만듬
         onGenerateRoute: (settings) {
           // If you push the PassArguments route
           if (settings.name == PassArgumentsScreen.routeName) {
@@ -297,11 +303,90 @@ class PassArgumentsScreen extends StatelessWidget {
   }
 }
 
-// You can pass any object to the arguments parameter. In this example,
-// create a class that contains both a customizable title and message.
 class ScreenArguments {
   final String title;
   final String message;
 
   ScreenArguments(this.title, this.message);
+}
+
+// Return data from a screen
+class PopReturnApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Returning Data Demo'),
+      ),
+      body: Center(child: SelectionButton()),
+    );
+  }
+}
+
+class SelectionButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        _navigateAndDisplaySelection(context);
+      },
+      child: Text('Pick an option, any option!'),
+    );
+  }
+
+  // A method that launches the SelectionScreen and awaits the result from
+  // Navigator.pop.
+  _navigateAndDisplaySelection(BuildContext context) async {
+    // Navigator.push returns a Future that completes after calling
+    // Navigator.pop on the Selection Screen.
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SelectionScreen()),
+    );
+
+    // After the Selection Screen returns a result, hide any previous snackbars
+    // and show the new result.
+    Scaffold.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text("$result")));
+  }
+}
+
+class SelectionScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Pick an option'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  // Close the screen and return "Yep!" as the result.
+                  Navigator.pop(context, ['Yep!', 'Yep!', 'Yep!', 'Yep!']);
+                },
+                child: Text('Yep!'),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  // Close the screen and return "Nope!" as the result.
+                  // Navigator.pop(context, 'Nope.');
+                  Navigator.pop(context, 3.14);
+                },
+                child: Text('Nope.'),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
 }
