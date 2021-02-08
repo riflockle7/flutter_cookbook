@@ -24,7 +24,12 @@ void main() {
   // runApp(HideAppBarApp());
 
   // Use List
-  runApp(UseListApp());
+  // runApp(UseListApp());
+
+  // Work with long lists
+  runApp(LongListApp(
+    items: List<String>.generate(10000, (i) => "Item $i"),
+  ));
 }
 
 // Create a grid list
@@ -248,6 +253,35 @@ class UseListApp extends StatelessWidget {
               title: Text('Phone'),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+// Work with long lists
+class LongListApp extends StatelessWidget {
+  final List<String> items;
+
+  LongListApp({Key key, @required this.items}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final title = 'Long List';
+
+    return MaterialApp(
+      title: title,
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(title),
+        ),
+        body: ListView.builder(
+          itemCount: items.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text('${items[index]}'),
+            );
+          },
         ),
       ),
     );
