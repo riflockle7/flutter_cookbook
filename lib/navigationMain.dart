@@ -11,19 +11,22 @@ void main() {
   // ));
 
   // Navigate with named routes
-  runApp(MaterialApp(
-    title: 'Named Routes Demo',
-    // 처음 route (화면)은 "/"
-    // '/' 은  FirstScreen 과 매치되어 있으므로 FirstScreen 을 먼저 부름
-    initialRoute: '/',
-    // 각 문자열별 route 명세
-    routes: {
-      // '/' -> FirstScreen
-      '/': (context) => FirstScreen(),
-      // '/second' -> SecondScreen
-      '/second': (context) => SecondScreen(),
-    },
-  ));
+  // runApp(MaterialApp(
+  //   title: 'Named Routes Demo',
+  //   // 처음 route (화면)은 "/"
+  //   // '/' 은  FirstScreen 과 매치되어 있으므로 FirstScreen 을 먼저 부름
+  //   initialRoute: '/',
+  //   // 각 문자열별 route 명세
+  //   routes: {
+  //     // '/' -> FirstScreen
+  //     '/': (context) => FirstScreen(),
+  //     // '/second' -> SecondScreen
+  //     '/second': (context) => SecondScreen(),
+  //   },
+  // ));
+
+  // Pass arguments to a named route
+  runApp(PassArgumentsApp());
 }
 
 // Animate a widget across screens
@@ -162,4 +165,143 @@ class SecondScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+// Pass arguments to a named route
+class PassArgumentsApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      // 명명 된 경로를 처리하는 기능
+      // push 되는 화면 식별 후, 올바른 화면을 만듬
+        onGenerateRoute: (settings) {
+          // If you push the PassArguments route
+          if (settings.name == PassArgumentsScreen.routeName) {
+            // 캐스팅
+            final ScreenArguments args = settings.arguments;
+
+            // 데이터를 올바른 화면으로 전달
+            return MaterialPageRoute(
+              builder: (context) {
+                return PassArgumentsScreen(
+                  title: args.title,
+                  message: args.message,
+                );
+              },
+            );
+          }
+
+          // pushNamed 로 호출하기 떄문에 있는 게 아닐까 생각
+          assert(false, 'Need to implement ${settings.name}');
+          return null;
+        },
+        title: 'Navigation with Arguments',
+        home: HomeScreen(),
+        routes: {
+          ExtractArgumentsScreen.routeName: (context) =>
+              ExtractArgumentsScreen(),
+        });
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home Screen'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            // 파라미터를 명시적으로 전달하는 방식으로 이동
+            ElevatedButton(
+              child: Text("Navigate to screen that extracts arguments"),
+              onPressed: () {
+                // argument 를 채우고 특정 화면으로 이동
+                Navigator.pushNamed(
+                  context,
+                  ExtractArgumentsScreen.routeName,
+                  arguments: ScreenArguments(
+                    'Extract Arguments Screen',
+                    'This message is extracted in the build method.',
+                  ),
+                );
+              },
+            ),
+            ElevatedButton(
+              child: Text("Navigate to a named that accepts arguments"),
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  PassArgumentsScreen.routeName,
+                  arguments: ScreenArguments(
+                    'Accept Arguments Screen',
+                    'This message is extracted in the onGenerateRoute function.',
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// arguments 를 추출하고 route 를 동적 구성하는 화면
+class ExtractArgumentsScreen extends StatelessWidget {
+  static const routeName = '/extractArguments';
+
+  @override
+  Widget build(BuildContext context) {
+    // ModalRoute.setting,argument 를 통해 arguments 값 추출
+    final ScreenArguments args = ModalRoute.of(context).settings.arguments;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(args.title),
+      ),
+      body: Center(
+        child: Text(args.message),
+      ),
+    );
+  }
+}
+
+// 전달받은 arguments 를 이용하여 route 를 동적 구성
+class PassArgumentsScreen extends StatelessWidget {
+  static const routeName = '/passArguments';
+
+  final String title;
+  final String message;
+
+  // 생성자. 라우트 생성시 전달한 파라미터를 argument 로 받아 저장
+  const PassArgumentsScreen({
+    Key key,
+    @required this.title,
+    @required this.message,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title),
+      ),
+      body: Center(
+        child: Text(message),
+      ),
+    );
+  }
+}
+
+// You can pass any object to the arguments parameter. In this example,
+// create a class that contains both a customizable title and message.
+class ScreenArguments {
+  final String title;
+  final String message;
+
+  ScreenArguments(this.title, this.message);
 }
